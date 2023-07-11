@@ -9,7 +9,7 @@ data via some add-hoc byte-orientated protocol, usually but not necessarily, ove
 - It supports the sending of user-defined message structures by encoding them to a
 byte-orientated frame through a user-defined `Encoder`.
 
-- Conversely, it supports the receiving of a byte-oriented frames and decoding then through
+- Conversely, it supports the receiving of byte-oriented frames and decoding them through
 a user-defined `Decoder` into messages as understood by the application.
 
 This is a low-dependency, light-weight crate.
