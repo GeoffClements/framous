@@ -1,0 +1,18 @@
+[package]
+name = "framous"
+version = "0.1.0"
+edition = "2021"
+authors = ['Geoff Clements <ro2kz0@gmail.com>']
+description = "A library sending and receiving packets to and from a Reader/Writer"
+
+documentation = "https://docs.rs/framous"
+homepage = "https://github.com/GeoffClements/framous"
+license = "MIT"
+readme = "./README.md"
+repository = "https://github.com/GeoffClements/framous"
+
+[dependencies]
+bytes = "1.4.0"
+
+[dev-dependencies]
+socket-server-mocker = "0.0.4"
