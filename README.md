@@ -15,6 +15,7 @@ a user-defined `Decoder` into messages as understood by the application.
 This is a low-dependency, light-weight crate.
 
 [![MIT licensed][mit-badge]][mit-url]
+[![Crate](https://img.shields.io/crates/v/framous.svg)](https://crates.io/crates/framous)
 
 [`tokio::util`]: https://docs.rs/tokio-util/latest/tokio_util/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg

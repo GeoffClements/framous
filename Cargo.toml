@@ -4,12 +4,13 @@ version = "0.1.1"
 edition = "2021"
 authors = ['Geoff Clements <ro2kz0@gmail.com>']
 description = "A library sending and receiving packets to and from a Reader/Writer"
-
 readme = "./README.md"
 documentation = "https://docs.rs/framous"
 homepage = "https://github.com/GeoffClements/framous"
 repository = "https://github.com/GeoffClements/framous"
 license = "MIT"
+categories = ["encoding", "network-programming"]
+keywords = ["networking", "protocol", "framing", "bytes", "packets"]
 
 [dependencies]
 bytes = "1.4.0"
