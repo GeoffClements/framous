@@ -14,7 +14,7 @@
 //! [`tokio::util`]: https://docs.rs/tokio-util/latest/tokio_util/
 //! 
 //! Typical usage:
-//! ```no-run
+//! ```no_run
 //! 
 //! enum MyMessage {
 //!     msg1,
