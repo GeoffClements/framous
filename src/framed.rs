@@ -53,11 +53,11 @@ where
     }
 }
 
-trait FramedReader<I> {
+pub trait FramedReader<I> {
     fn framed_read(&mut self) -> io::Result<I>;
 }
 
-trait FramedWriter<I> {
+pub trait FramedWriter<I> {
     fn framed_write(&mut self, item: I) -> io::Result<()>;
 }
 

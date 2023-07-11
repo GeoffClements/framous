@@ -21,3 +21,4 @@ pub mod codec;
 pub mod framed;
 
 pub use codec::{Decoder, Encoder};
+pub use framed::{FramedReader, FramedWriter};
