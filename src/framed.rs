@@ -13,7 +13,7 @@ pub struct FramedRead<R, D> {
 }
 
 impl<R, D> FramedRead<R, D> {
-    fn new(inner: R, decoder: D) -> Self {
+    pub fn new(inner: R, decoder: D) -> Self {
         Self {
             inner,
             decoder,
@@ -28,7 +28,7 @@ pub struct FramedWrite<W, E> {
 }
 
 impl<W, E> FramedWrite<W, E> {
-    fn new(inner: W, encoder: E) -> Self {
+    pub fn new(inner: W, encoder: E) -> Self {
         Self { inner, encoder }
     }
 }

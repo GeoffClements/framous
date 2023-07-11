@@ -5,11 +5,11 @@ edition = "2021"
 authors = ['Geoff Clements <ro2kz0@gmail.com>']
 description = "A library sending and receiving packets to and from a Reader/Writer"
 
+readme = "./README.md"
 documentation = "https://docs.rs/framous"
 homepage = "https://github.com/GeoffClements/framous"
-license = "MIT"
-readme = "./README.md"
 repository = "https://github.com/GeoffClements/framous"
+license = "MIT"
 
 [dependencies]
 bytes = "1.4.0"
