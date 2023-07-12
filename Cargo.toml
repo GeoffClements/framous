@@ -1,6 +1,6 @@
 [package]
 name = "framous"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ['Geoff Clements <ro2kz0@gmail.com>']
 description = "A library sending and receiving packets to and from a Reader/Writer"

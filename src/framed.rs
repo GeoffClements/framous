@@ -1,3 +1,22 @@
+//! These are the structs that you instantiate in your application.
+//! 
+//! In order to used framed packets you can use:
+//! * `FramedRead` to just decode packets into your own message type
+//! * `FramedWrite` if you just want to send encoded messages
+//! * `Framed` to do both
+//! 
+//! The `Framed*` structs take ownership the underlying `Read` or `Write`
+//! object. This means that they will work in multi-threaded applications
+//! but this presents a problem in the very likely case when the `Read`
+//! and `Write` object is the same `TcpStream`. In this case use the
+//! `try_clone` method on the stream to get a thread-safe handle.
+//! 
+//! A `Framed` type is useful in single-threaded applications where you
+//! just want a single object to encode and decode. For multi-threaded
+//! applications you can use `FramedRead` in one thread and `FramedWrite`
+//! in another.
+//! 
+
 use std::io::{self, Read, Write};
 
 use bytes::BytesMut;
@@ -51,12 +70,18 @@ where
             writer: FramedWrite::new(writer, encoder),
         }
     }
+
+    pub fn split(self) -> (FramedRead<R, D>, FramedWrite<W, E>) {
+        (self.reader, self.writer)
+    }
 }
 
+/// Trait for reading frames
 pub trait FramedReader<I> {
     fn framed_read(&mut self) -> io::Result<I>;
 }
 
+/// Trait for writing frames
 pub trait FramedWriter<I> {
     fn framed_write(&mut self, item: I) -> io::Result<()>;
 }
@@ -88,7 +113,7 @@ where
     fn framed_write(&mut self, item: I) -> io::Result<()> {
         let mut dst = BytesMut::with_capacity(INITIAL_CAPACITY);
         self.encoder.encode(item, &mut dst)?;
-        self.inner.write(&dst[..dst.len()])?;
+        self.inner.write(&dst[..])?;
         self.inner.flush()
     }
 }
