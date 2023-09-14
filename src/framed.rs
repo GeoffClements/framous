@@ -1,23 +1,23 @@
 //! These are the structs that you instantiate in your application.
-//! 
+//!
 //! In order to used framed packets you can use:
 //! * `FramedRead` to just decode packets into your own message type
 //! * `FramedWrite` if you just want to send encoded messages
 //! * `Framed` to do both
-//! 
+//!
 //! The `Framed*` structs take ownership the underlying `Read` or `Write`
 //! object. This means that they will work in multi-threaded applications
 //! but this presents a problem in the very likely case when the `Read`
 //! and `Write` object is the same `TcpStream`. In this case use the
 //! `try_clone` method on the stream to get a thread-safe handle.
-//! 
+//!
 //! A `Framed` type is useful in single-threaded applications where you
 //! just want a single object to encode and decode. For multi-threaded
 //! applications you can use `FramedRead` in one thread and `FramedWrite`
 //! in another.
-//! 
+//!
 
-use std::io::{self, Read, Write};
+use std::io::{self, Error, ErrorKind, Read, Write};
 
 use bytes::BytesMut;
 
@@ -95,6 +95,12 @@ where
         let mut src = [0u8; INITIAL_CAPACITY];
         loop {
             let bytes_read = self.inner.read(&mut src)?;
+            if bytes_read == 0 {
+                return Err(Error::new(
+                    ErrorKind::ConnectionReset,
+                    "Server connection reset",
+                ));
+            }
             self.buf.extend_from_slice(&src[..bytes_read]);
             match self.decoder.decode(&mut self.buf) {
                 Ok(Some(item)) => return Ok(item),
@@ -234,6 +240,14 @@ mod tests {
         let mut framed = FramedRead::new(&r[..], TestCodec);
         let data = framed.framed_read().unwrap();
         assert_eq!(data, TestMsg::Unrecognised);
+    }
+
+    #[test]
+    fn read_zero_length() {
+        let r: Vec<u8> = Vec::new();
+        let mut framed = FramedRead::new(&r[..], TestCodec);
+        let data = framed.framed_read();
+        assert!(data.is_err());
     }
 
     #[test]
