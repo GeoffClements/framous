@@ -22,7 +22,7 @@ This is a low-dependency, light-weight crate.
 
 [`tokio::util`]: https://docs.rs/tokio-util/latest/tokio_util/
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[mit-url]: https://github.com/tokio-rs/tokio/blob/master/LICENSE
+[mit-url]: https://github.com/GeoffClements/framous/blob/master/LICENSE
 [github]: https://github.com/GeoffCLements/framous
-[actions-badge]: https://github.com/tokio-rs/tokio/workflows/CI/badge.svg
-[actions-url]: https://github.com/GeoffClements/framous/actions?query=workflow%3ACI+branch%3Amaster
+[actions-badge]: https://github.com/GeoffClements/framous/actions/workflows/rust.yml/badge.svg
+[actions-url]: https://github.com/GeoffClements/framous/actions?query=workflow%3A+branch%3Amaster
