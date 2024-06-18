@@ -14,7 +14,7 @@
 //! [`tokio::util`]: https://docs.rs/tokio-util/latest/tokio_util/
 //! 
 //! Typical usage:
-//! ```rust,ignore
+//! ```rust,no_run
 //! 
 //! enum MyMessage {
 //!     msg1,
@@ -29,7 +29,7 @@
 //! 
 //!     fn decode(&mut self, src: &mut BytesMut) -> Result<Option<Self::Item>, Self::Error> {
 //!         // decode code
-//!         // see [`codec::Decoder`]
+//!         // see codec::Decoder
 //!     }
 //! }
 //! 
@@ -38,7 +38,7 @@
 //! 
 //!     fn encode(&mut self, item: MyMessage, dst: &mut BytesMut) -> Result<(), Self::Error> {
 //!         // encode code
-//!         // see [`codec::Encoder`]
+//!         // see codec::Encoder
 //!     }
 //! }
 //! 
