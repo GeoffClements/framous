@@ -148,8 +148,7 @@ where
 mod tests {
     use bytes::{Buf, BufMut};
     use socket_server_mocker::{
-        server_mocker::ServerMocker,
-        server_mocker_instruction::{ServerMockerInstruction, ServerMockerInstructionsList},
+        server_mocker::ServerMocker, server_mocker_instruction::Instruction::*,
         tcp_server_mocker::TcpServerMocker,
     };
 
@@ -289,20 +288,17 @@ mod tests {
     fn framed_over_tcp() {
         let test_buf = vec![2u8, 25, 143];
 
-        let tcp_server_mocker = TcpServerMocker::new(35642).unwrap();
+        let tcp_server_mocker = TcpServerMocker::new_with_port(35642).unwrap();
         let rx = TcpStream::connect("127.0.0.1:35642").unwrap();
         let tx = rx.try_clone().unwrap();
 
         let mut framed = Framed::new(rx, tx, TestCodec, TestCodec);
 
         tcp_server_mocker
-            .add_mock_instructions_list(ServerMockerInstructionsList::new_with_instructions(
-                [
-                    ServerMockerInstruction::ReceiveMessage,
-                    ServerMockerInstruction::SendMessage(Vec::from(test_buf.clone())),
-                ]
-                .as_slice(),
-            ))
+            .add_mock_instructions(vec![
+                ReceiveMessage,
+                SendMessage(Vec::from(test_buf.clone())),
+            ])
             .unwrap();
 
         framed.framed_write(TestMsg::U16(6543)).ok();
