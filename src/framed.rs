@@ -147,10 +147,7 @@ where
 #[cfg(test)]
 mod tests {
     use bytes::{Buf, BufMut};
-    use socket_server_mocker::{
-        server_mocker::ServerMocker, server_mocker_instruction::Instruction::*,
-        tcp_server_mocker::TcpServerMocker,
-    };
+    use socket_server_mocker::{Instruction::*, ServerMocker};
 
     use std::net::TcpStream;
 
@@ -288,7 +285,7 @@ mod tests {
     fn framed_over_tcp() {
         let test_buf = vec![2u8, 25, 143];
 
-        let tcp_server_mocker = TcpServerMocker::new_with_port(35642).unwrap();
+        let tcp_server_mocker = ServerMocker::tcp_with_port(35642).unwrap();
         let rx = TcpStream::connect("127.0.0.1:35642").unwrap();
         let tx = rx.try_clone().unwrap();
 
