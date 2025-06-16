@@ -17,13 +17,16 @@
 //! in another.
 //!
 
-use std::io::{self, Error, ErrorKind, Read, Write};
+use std::{
+    io::{self, Error, ErrorKind, Read, Write},
+    time::Duration,
+};
 
-use bytes::BytesMut;
+use bytes::{Buf, BytesMut};
 
 use crate::{Decoder, Encoder};
 
-const INITIAL_CAPACITY: usize = 8 * 1024;
+const INITIAL_CAPACITY: usize = 4 * 1024;
 
 pub struct FramedRead<R, D> {
     inner: R,
@@ -94,13 +97,34 @@ where
     fn framed_read(&mut self) -> io::Result<I> {
         let mut src = [0u8; INITIAL_CAPACITY];
         loop {
-            let bytes_read = self.inner.read(&mut src)?;
-            if bytes_read == 0 {
-                return Err(Error::new(
-                    ErrorKind::ConnectionReset,
-                    "Server connection reset",
-                ));
-            }
+            let bytes_read = loop {
+                match self.inner.read(&mut src) {
+                    Ok(0) => {
+                        return Err(Error::new(
+                            ErrorKind::ConnectionReset,
+                            "Server connection reset",
+                        ));
+                    }
+
+                    Ok(n) => break n,
+
+                    Err(e) if e.kind() == ErrorKind::WouldBlock => {
+                        std::thread::sleep(Duration::from_millis(1))
+                    }
+
+                    Err(e) if e.kind() == ErrorKind::Interrupted => {
+                        continue;
+                    }
+
+                    Err(e) => {
+                        return Err(Error::new(
+                            e.kind(),
+                            format!("Failed to read from stream: {}", e),
+                        ));
+                    }
+                }
+            };
+
             self.buf.extend_from_slice(&src[..bytes_read]);
             match self.decoder.decode(&mut self.buf) {
                 Ok(Some(item)) => return Ok(item),
@@ -119,7 +143,39 @@ where
     fn framed_write(&mut self, item: I) -> io::Result<()> {
         let mut dst = BytesMut::with_capacity(INITIAL_CAPACITY);
         self.encoder.encode(item, &mut dst)?;
-        self.inner.write(&dst[..])?;
+
+        loop {
+            match self.inner.write(&dst[..]) {
+                Ok(0) => {
+                    return Err(Error::new(
+                        ErrorKind::ConnectionReset,
+                        "Server connection reset",
+                    ));
+                }
+
+                Ok(n) => {
+                    if n < dst.len() {
+                        dst.advance(n);
+                    } else {
+                        break;
+                    }
+                }
+
+                Err(e) if e.kind() == ErrorKind::WouldBlock => {
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+
+                Err(e) if e.kind() == ErrorKind::Interrupted => {}
+
+                Err(e) => {
+                    return Err(Error::new(
+                        e.kind(),
+                        format!("Failed to write to stream: {}", e),
+                    ));
+                }
+            }
+        }
+
         self.inner.flush()
     }
 }
