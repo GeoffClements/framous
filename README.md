@@ -24,5 +24,5 @@ This is a low-dependency, light-weight crate.
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/GeoffClements/framous/blob/master/LICENSE
 [github]: https://github.com/GeoffCLements/framous
-[actions-badge]: https://github.com/GeoffClements/framous/actions/workflows/rust.yml/badge.svg
+[actions-badge]: https://github.com/GeoffClements/framous/actions/workflows/build_test.yml/badge.svg
 [actions-url]: https://github.com/GeoffClements/framous/actions?query=workflow%3A+branch%3Amaster
