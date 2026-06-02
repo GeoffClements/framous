@@ -1,8 +1,7 @@
 [package]
 name = "framous"
-version = "0.1.8"
+version = "0.1.9"
 edition = "2021"
-authors = ['Geoff Clements <ro2kz0@gmail.com>']
 description = "A library for sending and receiving packets to and from a Reader/Writer"
 readme = "./README.md"
 documentation = "https://docs.rs/framous"
@@ -11,9 +10,10 @@ repository = "https://github.com/GeoffClements/framous"
 license = "MIT"
 categories = ["encoding", "network-programming"]
 keywords = ["networking", "protocol", "framing", "bytes", "packets"]
+# authors = ['Geoff Clements <ro2kz0@gmail.com>']
 
 [dependencies]
-bytes = "1.10.1"
+bytes = "1.11.1"
 
 [dev-dependencies]
 socket-server-mocker = "0.5.0"
